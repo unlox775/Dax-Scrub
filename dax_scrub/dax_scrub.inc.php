@@ -53,6 +53,15 @@
 ###      
 ###      
 
+###  If we don't have debug.inc.php, stub some functions
+if ( ! function_exists('START_TIMER') ) {
+    function START_TIMER() {};
+    function PAUSE_TIMER() {};
+    function RESUME_TIMER() {};
+    function END_TIMER() {};
+    function bug() {};
+}
+
 ###  Globals
 $dax_neverNested =
       array( 'br' => true,
@@ -269,7 +278,7 @@ function dax_scrub($html, $scrub_config) { START_TIMER('dax_scrub'); global $dax
         else { # bug('CLOSE tag <'. $node['tagname'] .'>');
             ###  Which Tag does this Close?  Loop back 'til we find it (because it might NOT be THIS one...)
             $test_parent = &$dax_scrub_this_node;
-            while ( $test_parent['tagname'] != $node['tagname'] && ! isset( $test_parent['is_root_node'] )  && ! $test_parent['is_root_node'] ) { bug("MISSING parent <". $test_parent['tagname'] .">");  $test_parent = &$test_parent['parent']; }
+            while ( $test_parent['tagname'] != $node['tagname'] && ! isset( $test_parent['is_root_node'] )  && ! $test_parent['is_root_node'] ) { /* bug("MISSING parent <". $test_parent['tagname'] .">"); */  $test_parent = &$test_parent['parent']; }
             ###  If we have a CLOSE, that didn't match an OPEN, ignore the tag
             if ( isset( $test_parent['is_root_node'] ) ) { $tags[$i+1][0] = $tags[$i][0] . $tags[$i+1][0]; continue; } ###  keep the content, drop the tag
 
